@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Stock Application</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="profile">My Profile</string>
+</resources>
