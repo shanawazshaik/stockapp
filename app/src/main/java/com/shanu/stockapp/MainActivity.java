@@ -3,17 +3,14 @@ package com.shanu.stockapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 import com.shanu.stockapp.entity.GlobalQuote;
-import com.shanu.stockapp.entity.User;
 import com.shanu.stockapp.intf.RESTInterface;
 import com.shanu.stockapp.networking.RetrofitClient;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 
 import okhttp3.ResponseBody;
@@ -36,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 switch(tab.getPosition()) {
                     case 0:
-                        Log.d("tab is re clicked",
-                                String.valueOf(tab.getPosition()));
                         getPortFolioInfo();
                     default:
                         break;
@@ -59,32 +54,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getPortFolioInfo() {
-        Call<ResponseBody> stockCall = stockAPI.getStockInfo("GLOBAL_QUOTE",
-                "IBM", "demo");
-/*        Call<ResponseBody> stockCall = stockAPI.getUser();*/
-        stockCall.enqueue(new Callback<ResponseBody>() {
+        Call<GlobalQuote> stockCall = stockAPI.getStockInfo("GLOBAL_QUOTE",
+                "BEL.BSE", "G6ONJLPKW1FRF2M7");
+        stockCall.enqueue(new Callback<GlobalQuote>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-                Reader reader =  response.body().charStream();
-                try {
-                    char[] ch = new char[1024];
-                     int data = reader.read(ch);
-                    while (data != -1) {
-                        data = reader.read(ch);
-                        Log.d("Response Received", String.valueOf(ch));
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                }
+            public void onResponse(Call<GlobalQuote> call, Response<GlobalQuote> response) {
+                Log.d("Symbol", response.body().getGlobalQuote().get01Symbol());
 
 
                 showPortFolio();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<GlobalQuote> call, Throwable t) {
                 Log.d("Error Response Received", t.getMessage());
                 stockCall.cancel();
             }
