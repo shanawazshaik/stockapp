@@ -10,7 +10,7 @@ public class RetrofitClient {
     public static Retrofit getInstance() {
         if (retrofitInstance == null) {
             retrofitInstance = new Retrofit.Builder()
-                    .baseUrl("https://www.alphavantage.co/")
+                    .baseUrl("https://www.alphavantage.co")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
