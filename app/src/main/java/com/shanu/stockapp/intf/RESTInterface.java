@@ -2,7 +2,6 @@ package com.shanu.stockapp.intf;
 
 import com.shanu.stockapp.entity.GlobalQuote;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
