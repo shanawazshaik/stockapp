@@ -3,7 +3,7 @@ package com.shanu.stockapp.entity;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Expose;
 
-public class GlobalQuote_Body {
+public class GlobalQuoteBody {
 
     @SerializedName("01. symbol")
     @Expose

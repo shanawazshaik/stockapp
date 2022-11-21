@@ -7,13 +7,13 @@ public class GlobalQuote {
 
     @SerializedName("Global Quote")
     @Expose
-    private GlobalQuote_Body globalQuote;
+    private GlobalQuoteBody globalQuote;
 
-    public GlobalQuote_Body getGlobalQuote() {
+    public GlobalQuoteBody getGlobalQuote() {
         return globalQuote;
     }
 
-    public void setGlobalQuote(GlobalQuote_Body globalQuote) {
+    public void setGlobalQuote(GlobalQuoteBody globalQuote) {
         this.globalQuote = globalQuote;
     }
 
