@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import com.google.android.material.tabs.TabLayout;
+import com.shanu.stockapp.adapter.StockSearchAdaptor;
 import com.shanu.stockapp.entity.BestMatch;
 import com.shanu.stockapp.entity.BestMatchBody;
 import com.shanu.stockapp.entity.GlobalQuote;
 import com.shanu.stockapp.intf.RESTInterface;
 import com.shanu.stockapp.networking.RetrofitClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TabLayout stockTabLayout =  findViewById(R.id.stockInfoTab);
+/*        TabLayout stockTabLayout =  findViewById(R.id.stockInfoTab);
         stockTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -60,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
                 handleTabSelection(tab.getPosition());
             }
-        });
+        });*/
     }
 
     private void searchStocks(String newText) {
+        Log.d("new Text", newText);
         if (newText != null && !newText.isEmpty()) {
             Call<BestMatch> stockCall = stockAPI.searchStocks("SYMBOL_SEARCH",
                     newText, "G6ONJLPKW1FRF2M7");
@@ -74,23 +77,15 @@ public class MainActivity extends AppCompatActivity {
                         List<BestMatchBody> bestMatches = response.body().getBestMatches();
                         int size = bestMatches == null? 0: bestMatches.size();
                         if (size > 0) {
-                            String[] bestMatchStocks = new String[size];
-                            int i = 0;
-                            for(BestMatchBody bestMatchStock :bestMatches) {
-                                bestMatchStocks[i] = bestMatchStock.get1Symbol();
-                                i++;
-                            }
-
-                            ArrayAdapter<String> arr
-                                    = new ArrayAdapter<>(
+                            StockSearchAdaptor arr
+                                    = new StockSearchAdaptor(
                                     getApplicationContext(),
-                                    androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                                    bestMatchStocks);
+                                    (ArrayList)bestMatches);
                             listView.setAdapter(arr);
-                        } else{
+                        } else {
                             listView.setAdapter(null);
                         }
-                    } else{
+                    } else {
                         listView.setAdapter(null);
                     }
                 }
@@ -100,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     stockCall.cancel();
                 }
             });
-        }else{
+        } else {
             listView.setAdapter(null);
         }
     }
