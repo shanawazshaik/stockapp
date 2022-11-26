@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Stock Application</string>
+    <string name="app_name">Finance</string>
     <string name="details">Details</string>
     <string name="price">Price</string>
     <string name="symbol">Symbol</string>
