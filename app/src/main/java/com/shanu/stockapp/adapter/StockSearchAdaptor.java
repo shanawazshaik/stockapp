@@ -28,17 +28,13 @@ public class StockSearchAdaptor extends ArrayAdapter<BestMatchBody> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
         // Lookup view for data population
-        TextView symbol = (TextView) convertView.findViewById(R.id.symbol);
-        TextView type = (TextView) convertView.findViewById(R.id.type);
-        TextView region = (TextView) convertView.findViewById(R.id.region);
-        TextView open = (TextView) convertView.findViewById(R.id.open);
-        TextView close = (TextView) convertView.findViewById(R.id.close);
+        TextView symbol =  convertView.findViewById(R.id.symbol);
+        TextView type =  convertView.findViewById(R.id.type);
+        TextView name =  convertView.findViewById(R.id.name);
         // Populate the data into the template view using the data object
         symbol.setText(bestMatchBody.get1Symbol());
         type.setText(bestMatchBody.get3Type());
-        region.setText(bestMatchBody.get4Region());
-        open.setText(bestMatchBody.get5MarketOpen());
-        close.setText(bestMatchBody.get6MarketClose());
+        name.setText(bestMatchBody.get2Name());
         // Return the completed view to render on screen
 
         return convertView;

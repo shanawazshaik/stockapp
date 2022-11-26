@@ -1,18 +1,21 @@
 package com.shanu.stockapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
-import com.google.android.material.tabs.TabLayout;
+import com.shanu.stockapp.activity.StockDetailsActivity;
 import com.shanu.stockapp.adapter.StockSearchAdaptor;
 import com.shanu.stockapp.entity.BestMatch;
 import com.shanu.stockapp.entity.BestMatchBody;
 import com.shanu.stockapp.entity.GlobalQuote;
+import com.shanu.stockapp.entity.GlobalQuoteBody;
 import com.shanu.stockapp.intf.RESTInterface;
 import com.shanu.stockapp.networking.RetrofitClient;
 
@@ -48,21 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-/*        TabLayout stockTabLayout =  findViewById(R.id.stockInfoTab);
-        stockTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                handleTabSelection(tab.getPosition());
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                BestMatchBody bestMatchBody = (BestMatchBody)listView.getItemAtPosition(i);
+                Log.d("item click", bestMatchBody.get1Symbol());
+                showStockQuote(bestMatchBody.get1Symbol());
             }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                handleTabSelection(tab.getPosition());
-            }
-        });*/
+        });
     }
 
     private void searchStocks(String newText) {
@@ -100,23 +96,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleTabSelection(int position) {
-        switch(position) {
-            case 0:
-                getPortFolioInfo();
-                break;
-            default:
-                break;
-        }
-    }
-    private void getPortFolioInfo() {
+    private void showStockQuote(String symbol) {
+        Log.d("symbol from item click", symbol);
         Call<GlobalQuote> stockCall = stockAPI.getStockInfo("GLOBAL_QUOTE",
-                "BEL.BSE", "G6ONJLPKW1FRF2M7");
+                symbol, "G6ONJLPKW1FRF2M7");
         stockCall.enqueue(new Callback<GlobalQuote>() {
             @Override
             public void onResponse(Call<GlobalQuote> call, Response<GlobalQuote> response) {
-                Log.d("Symbol", response.body().getGlobalQuote().get01Symbol());
-                showPortFolio();
+                GlobalQuoteBody quote = response.body().getGlobalQuote();
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("symbol", symbol);
+                bundle.putCharSequence("price", quote.get05Price());
+                bundle.putCharSequence("open", quote.get02Open());
+                bundle.putCharSequence("high", quote.get03High());
+                bundle.putCharSequence("low", quote.get04Low());
+                bundle.putCharSequence("volume", quote.get06Volume());
+                bundle.putCharSequence("change", quote.get09Change());
+                bundle.putCharSequence("change_percentage", quote.get10ChangePercent());
+                bundle.putCharSequence("previous_close", quote.get08PreviousClose());
+                Intent stockInfoActivity = new Intent(MainActivity.this, StockDetailsActivity.class);
+                stockInfoActivity.putExtras(bundle);
+                startActivity(stockInfoActivity);
             }
             @Override
             public void onFailure(Call<GlobalQuote> call, Throwable t) {
@@ -124,7 +124,5 @@ public class MainActivity extends AppCompatActivity {
                 stockCall.cancel();
             }
         });
-    }
-    private void showPortFolio() {
     }
 }
