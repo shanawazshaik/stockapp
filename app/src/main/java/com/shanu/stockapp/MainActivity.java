@@ -21,8 +21,6 @@ import com.shanu.stockapp.networking.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<BestMatch> call, Response<BestMatch> response) {
                     if (response.body() != null) {
                         List<BestMatchBody> bestMatches = response.body().getBestMatches();
-
-                       // bestMatches = bestMatches.stream().filter(bestMatch -> bestMatch.get1Symbol().contains("India")).collect(Collectors.toList());
 
                         int size = bestMatches == null? 0: bestMatches.size();
                         if (size > 0) {
