@@ -13,7 +13,6 @@ import com.shanu.stockapp.R;
 import com.shanu.stockapp.entity.BestMatchBody;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StockSearchAdaptor extends ArrayAdapter<BestMatchBody> {
     public StockSearchAdaptor(@NonNull Context context, @NonNull ArrayList<BestMatchBody> objects) {
