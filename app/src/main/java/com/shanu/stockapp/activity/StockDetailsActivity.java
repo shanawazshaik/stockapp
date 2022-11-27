@@ -2,6 +2,7 @@ package com.shanu.stockapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,15 +26,18 @@ public class StockDetailsActivity extends AppCompatActivity {
         TextView volume =  findViewById(R.id.volume);
         Bundle stockInfo = getIntent().getExtras();
         if(stockInfo != null) {
+            Log.d("In the Activity for stock details", stockInfo.toString());
             symbol.setText(stockInfo.getString("symbol", ""));
-            price.setText(getString(R.string.price) + "\n" + stockInfo.getString("price", ""));
-            high.setText(getString(R.string.high) + "\n" + stockInfo.getString("high", ""));
-            low.setText(getString(R.string.low) + "\n" + stockInfo.getString("low", ""));
-            change.setText(getString(R.string.change) + "\n" + stockInfo.getString("change", ""));
-            changePercentage.setText(getString(R.string.change_percentage) + "\n" + stockInfo.getString("change_percentage", ""));
-            volume.setText(getString(R.string.volume) + "\n" + stockInfo.getString("volume", ""));
-            open.setText(getString(R.string.open) + "\n" + stockInfo.getString("open", ""));
-            previousClose.setText(getString(R.string.previous_close) + "\n" + stockInfo.getString("previous_close", ""));
+            price.setText(String.format("%s\n%s", getString(R.string.price), stockInfo.getString("price", "")));
+            high.setText(String.format("%s\n%s", getString(R.string.high), stockInfo.getString("high", "")));
+            low.setText(String.format("%s\n%s", getString(R.string.low), stockInfo.getString("low", "")));
+            change.setText(String.format("%s\n%s", getString(R.string.change), stockInfo.getString("change", "")));
+            changePercentage.setText(String.format("%s\n%s", getString(R.string.change_percentage), stockInfo.getString("change_percentage", "")));
+            volume.setText(String.format("%s\n%s", getString(R.string.volume), stockInfo.getString("volume", "")));
+            open.setText(String.format("%s\n%s", getString(R.string.open), stockInfo.getString("open", "")));
+            previousClose.setText(String.format("%s\n%s", getString(R.string.previous_close), stockInfo.getString("previous_close", "")));
+        } else {
+            Log.d("in stock details activity", "bundle is null");
         }
     }
 }

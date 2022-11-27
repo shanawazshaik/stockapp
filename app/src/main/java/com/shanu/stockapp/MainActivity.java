@@ -41,12 +41,17 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query != null && !query.isEmpty()) {
+                    searchStocks(query);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchStocks(newText);
+                if (newText != null && newText.length() >=3 ) {
+                    searchStocks(newText);
+                }
                 return false;
             }
         });
@@ -116,8 +121,10 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putCharSequence("change", quote.get09Change());
                     bundle.putCharSequence("change_percentage", quote.get10ChangePercent());
                     bundle.putCharSequence("previous_close", quote.get08PreviousClose());
+
                     Intent stockInfoActivity = new Intent(MainActivity.this, StockDetailsActivity.class);
                     stockInfoActivity.putExtras(bundle);
+                    Log.d("Starting Activity for stock details", response.message());
                     startActivity(stockInfoActivity);
                 } else {
                     Log.d("Incorrect response", response.message());
