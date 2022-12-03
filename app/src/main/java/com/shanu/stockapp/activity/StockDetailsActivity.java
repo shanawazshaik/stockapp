@@ -30,8 +30,21 @@ public class StockDetailsActivity extends AppCompatActivity {
             price.setText(String.format("%s\n%s", getString(R.string.price), stockInfo.getString("price", "")));
             high.setText(String.format("%s\n%s", getString(R.string.high), stockInfo.getString("high", "")));
             low.setText(String.format("%s\n%s", getString(R.string.low), stockInfo.getString("low", "")));
-            change.setText(String.format("%s\n%s", getString(R.string.change), stockInfo.getString("change", "")));
-            changePercentage.setText(String.format("%s\n%s", getString(R.string.change_percentage), stockInfo.getString("change_percentage", "")));
+
+            float changeFloat = Float.parseFloat(stockInfo.getString("change", ""));
+            change.setText(String.format("%s\n%s", getString(R.string.change), changeFloat));
+            if (changeFloat >= 0) {
+                change.setTextColor(getColor(R.color.green));
+            } else {
+                change.setTextColor(getColor(R.color.red));
+            }
+            String changePercentageStr = stockInfo.getString("change_percentage", "");
+            changePercentage.setText(String.format("%s\n%s", getString(R.string.change_percentage), changePercentageStr));
+            if (changePercentageStr.startsWith("-")) {
+                changePercentage.setTextColor(getColor(R.color.red));
+            } else {
+                changePercentage.setTextColor(getColor(R.color.green));
+            }
             volume.setText(String.format("%s\n%s", getString(R.string.volume), stockInfo.getString("volume", "")));
             open.setText(String.format("%s\n%s", getString(R.string.open), stockInfo.getString("open", "")));
             previousClose.setText(String.format("%s\n%s", getString(R.string.previous_close), stockInfo.getString("previous_close", "")));

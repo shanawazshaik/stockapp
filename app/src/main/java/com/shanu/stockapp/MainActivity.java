@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     RESTInterface stockAPI = null;
     SearchView searchView = null;
     ListView listView = null;
+    ProgressBar searchProgressBar = null;
+    ProgressBar quoteProgressBar = null;
+    boolean searchInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +43,14 @@ public class MainActivity extends AppCompatActivity {
         stockAPI = RetrofitClient.getInstance().create(RESTInterface.class);
         searchView =  findViewById(R.id.searchViewId);
         listView =  findViewById(R.id.searchListId);
+        searchProgressBar =  findViewById(R.id.progressId);
+        quoteProgressBar =  findViewById(R.id.showQuoteProgressId);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query != null && !query.isEmpty()) {
+                if (query != null && !query.isEmpty() && !searchInProgress) {
+                    searchInProgress = true;
+                    listView.setVisibility(ProgressBar.VISIBLE);
                     searchStocks(query);
                 }
                 return false;
@@ -49,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText != null && newText.length() >=3 ) {
+                if (newText != null && newText.length() >=3 && !searchInProgress) {
+                    searchInProgress = true;
+                    searchProgressBar.setVisibility(ProgressBar.VISIBLE);
                     searchStocks(newText);
                 }
                 return false;
@@ -59,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             BestMatchBody bestMatchBody = (BestMatchBody)listView.getItemAtPosition(i);
             if (bestMatchBody != null) {
                 Log.d("item click", bestMatchBody.get1Symbol());
+                quoteProgressBar.setVisibility(ProgressBar.VISIBLE);
                 showStockQuote(bestMatchBody.get1Symbol());
             }
         });
@@ -72,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             stockCall.enqueue(new Callback<BestMatch>() {
                 @Override
                 public void onResponse(@NonNull Call<BestMatch> call, @NonNull Response<BestMatch> response) {
+                    searchInProgress = false;
+                    searchProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     if (response.body() != null) {
                         List<BestMatchBody> bestMatches = response.body().getBestMatches();
                         if(bestMatches != null && !bestMatches.isEmpty()) {
@@ -85,15 +99,20 @@ public class MainActivity extends AppCompatActivity {
                                     (ArrayList<BestMatchBody>) bestMatches);
                             listView.setAdapter(arr);
                         } else {
+                            Toast.makeText(getApplicationContext(), "There is no such symbol", Toast.LENGTH_SHORT).show();
                             listView.setAdapter(null);
                         }
                     } else {
+                        Toast.makeText(getApplicationContext(), "There is no such symbol", Toast.LENGTH_SHORT).show();
                         listView.setAdapter(null);
                     }
                 }
                 @Override
                 public void onFailure(@NonNull Call<BestMatch> call, @NonNull Throwable t) {
+                    searchInProgress = false;
+                    searchProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     Log.d("Error Response Received", t.getMessage());
+                    Toast.makeText(getApplicationContext(), "Failed to search"+t.getMessage(), Toast.LENGTH_SHORT).show();
                     stockCall.cancel();
                 }
             });
@@ -109,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         stockCall.enqueue(new Callback<GlobalQuote>() {
             @Override
             public void onResponse(@NonNull Call<GlobalQuote> call, @NonNull Response<GlobalQuote> response) {
+                quoteProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 if (response.body() != null && response.body().getGlobalQuote() != null) {
                     GlobalQuoteBody quote = response.body().getGlobalQuote();
                     Bundle bundle = new Bundle();
@@ -128,12 +148,15 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(stockInfoActivity);
                 } else {
                     Log.d("Incorrect response", response.message());
+                    Toast.makeText(getApplicationContext(), "Try again", Toast.LENGTH_SHORT).show();
                 }
 
             }
             @Override
             public void onFailure(@NonNull Call<GlobalQuote> call, @NonNull Throwable t) {
                 Log.d("Error Response Received", t.getMessage());
+                quoteProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                Toast.makeText(getApplicationContext(), "Failed to get quote"+ t.getMessage(), Toast.LENGTH_SHORT).show();
                 stockCall.cancel();
             }
         });
