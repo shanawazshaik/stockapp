@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     SearchView searchView = null;
     ListView listView = null;
     ProgressBar searchProgressBar = null;
-    ProgressBar quoteProgressBar = null;
-    boolean searchInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +42,10 @@ public class MainActivity extends AppCompatActivity {
         searchView =  findViewById(R.id.searchViewId);
         listView =  findViewById(R.id.searchListId);
         searchProgressBar =  findViewById(R.id.progressId);
-        quoteProgressBar =  findViewById(R.id.showQuoteProgressId);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if (query != null && !query.isEmpty() && !searchInProgress) {
-                    searchInProgress = true;
+                if (query != null && !query.isEmpty()) {
                     listView.setVisibility(ProgressBar.VISIBLE);
                     searchStocks(query);
                 }
@@ -58,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (newText != null && newText.length() >=3 && !searchInProgress) {
-                    searchInProgress = true;
+                if (newText != null && newText.length() >=3) {
                     searchProgressBar.setVisibility(ProgressBar.VISIBLE);
                     searchStocks(newText);
                 }
@@ -70,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
             BestMatchBody bestMatchBody = (BestMatchBody)listView.getItemAtPosition(i);
             if (bestMatchBody != null) {
                 Log.d("item click", bestMatchBody.get1Symbol());
+                ProgressBar quoteProgressBar =  view.findViewById(R.id.showQuoteProgressId);
                 quoteProgressBar.setVisibility(ProgressBar.VISIBLE);
-                showStockQuote(bestMatchBody.get1Symbol());
+                showStockQuote(bestMatchBody.get1Symbol(), quoteProgressBar);
             }
         });
     }
@@ -84,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
             stockCall.enqueue(new Callback<BestMatch>() {
                 @Override
                 public void onResponse(@NonNull Call<BestMatch> call, @NonNull Response<BestMatch> response) {
-                    searchInProgress = false;
                     searchProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     if (response.body() != null) {
                         List<BestMatchBody> bestMatches = response.body().getBestMatches();
@@ -109,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onFailure(@NonNull Call<BestMatch> call, @NonNull Throwable t) {
-                    searchInProgress = false;
                     searchProgressBar.setVisibility(ProgressBar.INVISIBLE);
                     Log.d("Error Response Received", t.getMessage());
                     Toast.makeText(getApplicationContext(), "Failed to search"+t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -121,14 +115,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showStockQuote(String symbol) {
+    private void showStockQuote(String symbol, ProgressBar quoteProgressBar) {
         Log.d("symbol from item click", symbol);
         Call<GlobalQuote> stockCall = stockAPI.getStockInfo("GLOBAL_QUOTE",
                 symbol, "G6ONJLPKW1FRF2M7");
         stockCall.enqueue(new Callback<GlobalQuote>() {
             @Override
             public void onResponse(@NonNull Call<GlobalQuote> call, @NonNull Response<GlobalQuote> response) {
-                quoteProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                quoteProgressBar.setVisibility(ProgressBar.GONE);
                 if (response.body() != null && response.body().getGlobalQuote() != null) {
                     GlobalQuoteBody quote = response.body().getGlobalQuote();
                     Bundle bundle = new Bundle();
@@ -155,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<GlobalQuote> call, @NonNull Throwable t) {
                 Log.d("Error Response Received", t.getMessage());
-                quoteProgressBar.setVisibility(ProgressBar.INVISIBLE);
+                quoteProgressBar.setVisibility(ProgressBar.GONE);
                 Toast.makeText(getApplicationContext(), "Failed to get quote"+ t.getMessage(), Toast.LENGTH_SHORT).show();
                 stockCall.cancel();
             }

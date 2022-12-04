@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content"
     android:background="@drawable/background_list_item">
-    <RelativeLayout
-        android:layout_width="match_parent"
+
+    <LinearLayout
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
-        <LinearLayout
+        android:padding="5dp">
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="INFY"
-                    android:id="@+id/symbol"
-                    android:padding="10dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Equity"
-                    android:id="@+id/type"
-                    android:padding="10dp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Infosys"
-                    android:id="@+id/name"
-                    android:padding="10dp"/>
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="INFY"
+            android:id="@+id/symbol"
+            android:textSize="11sp"
+            android:padding="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Equity"
+            android:textSize="11sp"
+            android:id="@+id/type"
+            android:padding="11dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Infosys"
+            android:textSize="11sp"
+            android:id="@+id/name"
+            android:padding="10dp"/>
+        <ProgressBar
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/showQuoteProgressId"
+            android:elevation="1dp"
+            android:visibility="gone"
+            android:padding="5dp"
+            />
+    </LinearLayout>
+</RelativeLayout>
 

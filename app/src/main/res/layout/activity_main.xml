@@ -20,7 +20,7 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchViewId"
-            android:layout_width="270dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             app:queryBackground="@color/olive"
             android:layout_margin="5dp"
@@ -32,23 +32,12 @@
             android:visibility="invisible"
             android:id="@+id/progressId" />
     </LinearLayout>
-    <LinearLayout
+    <ListView
+        android:id="@+id/searchListId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="vertical">
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:id="@+id/showQuoteProgressId"
-            android:elevation="1dp"
-            android:visibility="invisible" />
-        <ListView
-            android:id="@+id/searchListId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/list_item"/>
-    </LinearLayout>
+        tools:listitem="@layout/list_item"/>
 </LinearLayout>
 
 </RelativeLayout>
