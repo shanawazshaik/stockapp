@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(stockInfoActivity);
                 } else {
                     Log.d("Incorrect response", response.message());
-                    Toast.makeText(getApplicationContext(), "Try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to get Quote, Try again", Toast.LENGTH_SHORT).show();
                 }
 
             }
