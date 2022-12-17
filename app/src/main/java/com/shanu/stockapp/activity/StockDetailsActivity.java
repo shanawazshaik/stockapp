@@ -30,14 +30,20 @@ public class StockDetailsActivity extends AppCompatActivity {
             price.setText(String.format("%s\n%s", getString(R.string.price), stockInfo.getString("price", "")));
             high.setText(String.format("%s\n%s", getString(R.string.high), stockInfo.getString("high", "")));
             low.setText(String.format("%s\n%s", getString(R.string.low), stockInfo.getString("low", "")));
-
-            float changeFloat = Float.parseFloat(stockInfo.getString("change", ""));
-            change.setText(String.format("%s\n%s", getString(R.string.change), changeFloat));
-            if (changeFloat >= 0) {
-                change.setTextColor(getColor(R.color.green));
-            } else {
-                change.setTextColor(getColor(R.color.red));
+            String changeStr = stockInfo.getString("change", "");
+            try {
+                float changeFloat = Float.parseFloat(changeStr);
+                change.setText(String.format("%s\n%s", getString(R.string.change), changeFloat));
+                if (changeFloat >= 0) {
+                    change.setTextColor(getColor(R.color.green));
+                } else {
+                    change.setTextColor(getColor(R.color.red));
+                }
+            } catch (Exception e) {
+                // value is String eg: 'None'
+                change.setText(String.format("%s\n%s", getString(R.string.change), changeStr));
             }
+
             String changePercentageStr = stockInfo.getString("change_percentage", "");
             changePercentage.setText(String.format("%s\n%s", getString(R.string.change_percentage), changePercentageStr));
             if (changePercentageStr.startsWith("-")) {

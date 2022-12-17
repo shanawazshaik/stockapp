@@ -28,11 +28,9 @@ public class StockSearchAdaptor extends ArrayAdapter<BestMatchBody> {
         }
         // Lookup view for data population
         TextView symbol =  convertView.findViewById(R.id.symbol);
-        TextView type =  convertView.findViewById(R.id.type);
         TextView name =  convertView.findViewById(R.id.name);
         // Populate the data into the template view using the data object
         symbol.setText(bestMatchBody.get1Symbol());
-        type.setText(bestMatchBody.get3Type());
         name.setText(bestMatchBody.get2Name());
         // Return the completed view to render on screen
 

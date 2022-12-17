@@ -23,13 +23,13 @@
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             app:queryBackground="@color/olive"
-            android:layout_margin="5dp"
+            android:padding="10dp"
             app:queryHint="Type Stock Symbol"/>
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_margin="5dp"
-            android:visibility="invisible"
+            android:padding="10dp"
+            android:visibility="gone"
             android:id="@+id/progressId" />
     </LinearLayout>
     <ListView

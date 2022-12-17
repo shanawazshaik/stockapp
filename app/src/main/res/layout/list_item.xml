@@ -22,13 +22,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Equity"
-                android:textSize="11sp"
-                android:id="@+id/type"
-                android:padding="11dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Infosys"
                 android:textSize="11sp"
                 android:id="@+id/name"
@@ -37,11 +30,10 @@
 
         <ProgressBar
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:id="@+id/showQuoteProgressId"
-            android:elevation="1dp"
             android:visibility="gone"
-            android:padding="5dp"
+            android:padding="10dp"
             />
     </LinearLayout>
 </RelativeLayout>
