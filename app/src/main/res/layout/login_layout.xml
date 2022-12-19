@@ -10,8 +10,9 @@
         android:layout_centerHorizontal="true"
         android:textSize="30sp"
         android:textColor="@color/green"
-        android:layout_marginTop="150dp"/>
+        android:layout_marginTop="80dp"/>
     <TextView
+        android:id="@id/welcome_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_message"
@@ -21,18 +22,18 @@
         android:textColor="@color/green" />
     <EditText
         android:id="@+id/username"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="50dp"
         android:inputType="textEmailAddress"
         android:hint="@string/email"
         android:gravity="center"
-        android:layout_centerInParent="true"
         android:background="@color/olive"
         android:layout_centerHorizontal="true"
-        android:layout_margin="5dp" />
+        android:layout_below="@+id/welcome_message"
+        android:layout_marginTop="25dp" />
     <EditText
         android:id="@+id/password"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="50dp"
         android:inputType="textPassword"
         android:hint="@string/password"
@@ -46,16 +47,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"
-        android:layout_alignRight="@+id/password"
+        android:layout_alignLeft="@+id/password"
         >
         <Button
             android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/password"
             android:text="@string/login"
             android:backgroundTint="@color/olive"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            />
         <Button
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
@@ -69,9 +70,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/login_layout"
+        android:layout_alignLeft="@+id/login_layout"
         android:textSize="15sp"
+        android:layout_marginTop="10dp"
         android:textColor="@color/green" />
 
 </RelativeLayout>
